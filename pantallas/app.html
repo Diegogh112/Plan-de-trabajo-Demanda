@@ -256,7 +256,9 @@ tbody td{padding:7px 10px;color:#212121;vertical-align:middle;}
 
 <!-- ===== APP BAR ===== -->
 <div class="appbar">
-  <div class="appbar-logo">Demanda Táctica TI <span>Banco de la Nación — OPP</span></div>
+  <div class="appbar-logo" style="cursor:pointer;" onclick="togglePanel()">
+    Demanda Táctica TI <span>Banco de la Nación — OPP</span>
+  </div>
   <div class="nav-group">
     <div class="nav-sep">App TI</div>
     <div class="appbar-tab active" onclick="ir(0)" id="tab0">📋 Consulta</div>
@@ -271,6 +273,79 @@ tbody td{padding:7px 10px;color:#212121;vertical-align:middle;}
   </div>
   <div class="appbar-right">👤 Pedro García · Gestor TI</div>
 </div>
+
+<!-- ===== PANEL PROJECT (esquina superior izquierda) ===== -->
+<div id="project-panel" style="
+  display:none;position:fixed;top:52px;left:0;width:360px;max-height:calc(100vh - 52px);
+  overflow-y:auto;background:white;box-shadow:4px 0 20px rgba(0,0,0,.18);
+  z-index:100;font-family:'Segoe UI',sans-serif;font-size:12px;border-right:3px solid #8b0000;">
+  <!-- Cabecera panel -->
+  <div style="background:linear-gradient(90deg,#8b0000,#c0392b);color:white;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div style="font-size:14px;font-weight:700;">📁 Plan del Proyecto</div>
+      <div style="font-size:10px;opacity:.8;margin-top:1px;">Demanda Táctica TI · Banco de la Nación OPP</div>
+    </div>
+    <button onclick="togglePanel()" style="background:none;border:none;color:white;font-size:18px;cursor:pointer;opacity:.8;">✕</button>
+  </div>
+
+  <!-- RESUMEN RÁPIDO -->
+  <div style="padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+    <div style="font-size:10px;font-weight:700;color:#8b0000;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Resumen</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:#f5f5f5;border-radius:5px;padding:8px 10px;text-align:center;">
+        <div style="font-size:20px;font-weight:700;color:#1a3a6b;">10</div>
+        <div style="font-size:10px;color:#666;">Semanas</div>
+      </div>
+      <div style="background:#f5f5f5;border-radius:5px;padding:8px 10px;text-align:center;">
+        <div style="font-size:20px;font-weight:700;color:#1a3a6b;">5</div>
+        <div style="font-size:10px;color:#666;">Personas</div>
+      </div>
+      <div style="background:#f5f5f5;border-radius:5px;padding:8px 10px;text-align:center;">
+        <div style="font-size:20px;font-weight:700;color:#1a3a6b;">6</div>
+        <div style="font-size:10px;color:#666;">Pantallas</div>
+      </div>
+      <div style="background:#f5f5f5;border-radius:5px;padding:8px 10px;text-align:center;">
+        <div style="font-size:20px;font-weight:700;color:#1a3a6b;">12</div>
+        <div style="font-size:10px;color:#666;">Requerimientos</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;">
+      <div style="font-size:10px;color:#666;margin-bottom:4px;">Stack tecnológico</div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;">
+        <span style="background:#e3f2fd;color:#0d47a1;padding:2px 7px;border-radius:9px;font-size:10px;font-weight:600;">Power Apps</span>
+        <span style="background:#e8f5e9;color:#1b5e20;padding:2px 7px;border-radius:9px;font-size:10px;font-weight:600;">SharePoint</span>
+        <span style="background:#fff8e1;color:#e65100;padding:2px 7px;border-radius:9px;font-size:10px;font-weight:600;">Power Automate</span>
+        <span style="background:#f3e5f5;color:#6a1b9a;padding:2px 7px;border-radius:9px;font-size:10px;font-weight:600;">Power BI</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRONOGRAMA -->
+  <div style="padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+    <div style="font-size:10px;font-weight:700;color:#8b0000;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">📅 Cronograma (10 semanas)</div>
+    <div id="panel-semanas"></div>
+  </div>
+
+  <!-- TAREAS -->
+  <div style="padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+    <div style="font-size:10px;font-weight:700;color:#8b0000;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">🏗️ Tareas de Implementación</div>
+    <div id="panel-tareas"></div>
+  </div>
+
+  <!-- REQUERIMIENTOS -->
+  <div style="padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+    <div style="font-size:10px;font-weight:700;color:#8b0000;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">🎯 Requerimientos Funcionales</div>
+    <div id="panel-reqs"></div>
+  </div>
+
+  <!-- CICLO DE VIDA -->
+  <div style="padding:12px 16px;">
+    <div style="font-size:10px;font-weight:700;color:#8b0000;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">🔄 Ciclo de Vida del Requerimiento</div>
+    <div style="display:flex;flex-direction:column;gap:4px;" id="panel-ciclo"></div>
+  </div>
+</div>
+<!-- Overlay para cerrar el panel haciendo clic afuera -->
+<div id="panel-overlay" onclick="togglePanel()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:99;"></div>
 
 <div class="screens">
 
@@ -1541,6 +1616,132 @@ function confirmarPrio() {
   document.getElementById('cambios-lbl').style.display = 'none';
   document.querySelectorAll('.chg-dot').forEach(d=>d.classList.remove('show'));
   mostrarToast('✅ Prioridades guardadas. TI fue notificado del nuevo orden de atención.');
+}
+
+// ================================================================
+// PANEL PROJECT — datos y lógica
+// ================================================================
+const SEMANAS = [
+  {n:1, fase:'Preparación', entregable:'Entorno SharePoint + permisos + datos de prueba', done:false},
+  {n:2, fase:'Registro',    entregable:'Formulario Anexo 02 + Flow → Backlog', done:false},
+  {n:3, fase:'Registro',    entregable:'Backlog completo + Flows de estado (CQ, Comité)', done:false},
+  {n:4, fase:'Registro',    entregable:'Iniciativas + trazabilidad completa E2E', done:false},
+  {n:5, fase:'Consulta',    entregable:'Pantalla Consultas TI con filtros y exportación', done:false},
+  {n:6, fase:'Análisis',    entregable:'Portal por Gerencia con gráficos Power BI', done:false},
+  {n:7, fase:'Análisis',    entregable:'Priorización por Gerencia (drag & drop)', done:false},
+  {n:8, fase:'Capacidad',   entregable:'Evaluación de Capacidad — detección de cruces', done:false},
+  {n:9, fase:'Integración', entregable:'Sistema integrado, auditoría, regresión', done:false},
+  {n:10,fase:'UAT/Prod',    entregable:'Validación con usuarios + pase a producción', done:false},
+];
+const TAREAS = [
+  {n:1, desc:'Configurar entorno base (SharePoint, permisos, datos de prueba)', done:false},
+  {n:2, desc:'Canvas App TI — Registro de Anexo 02 + Flow → Backlog', done:false},
+  {n:3, desc:'Backlog + transiciones de estado (Flows CQ y Comité)', done:false},
+  {n:4, desc:'Iniciativas + trazabilidad completa', done:false},
+  {n:5, desc:'Pantalla de Consultas TI (filtros, ficha navegable, exportación)', done:false},
+  {n:6, desc:'Portal por Gerencia (KPIs + gráficos Power BI)', done:false},
+  {n:7, desc:'Priorización por Gerencia (drag & drop + notificaciones)', done:false},
+  {n:8, desc:'Evaluación de Capacidad (Gantt + detección de cruces)', done:false},
+  {n:9, desc:'Integración final + auditoría + UAT + producción', done:false},
+];
+const REQS_PANEL = [
+  {n:1, desc:'Ciclo de vida del requerimiento (8 estados)', pantalla:'Transversal'},
+  {n:2, desc:'Registro de Iniciativas', pantalla:'App TI'},
+  {n:3, desc:'Registro y Firma del Anexo 02', pantalla:'App TI'},
+  {n:4, desc:'Gestión del Backlog', pantalla:'App TI'},
+  {n:5, desc:'Pantalla de Consultas (TI)', pantalla:'App TI'},
+  {n:6, desc:'Portal por Gerencia', pantalla:'App Gerencias'},
+  {n:7, desc:'Priorización por Gerencia', pantalla:'App Gerencias'},
+  {n:8, desc:'Evaluación de Capacidad', pantalla:'App TI'},
+  {n:9, desc:'Gestión de Demanda Táctica', pantalla:'App TI'},
+  {n:10,desc:'Autenticación y Control de Acceso', pantalla:'Transversal'},
+  {n:11,desc:'Wireframes referenciales', pantalla:'Documentación'},
+  {n:12,desc:'Plan de trabajo (10 semanas)', pantalla:'Gestión'},
+];
+const CICLO_PANEL = [
+  {estado:'Iniciativa Registrada', desc:'Gerencia tiene una idea/necesidad', color:'#6a1b9a', bg:'#f3e5f5'},
+  {estado:'Solicitud en Proceso',  desc:'Anexo 02 generado, pendiente de visado', color:'#0d47a1', bg:'#e3f2fd'},
+  {estado:'Solicitud Visada',      desc:'Anexo 02 firmado por ambas partes', color:'#1b5e20', bg:'#e8f5e9'},
+  {estado:'Registrado',            desc:'Trámite CQ creado → ingresa al Backlog', color:'#0050a0', bg:'#dae3f3'},
+  {estado:'Evaluado',              desc:'Aprobado técnicamente por Construcción', color:'#8a6914', bg:'#fff4ce'},
+  {estado:'Priorizado',            desc:'Comité TI lo selecciona → Demanda Táctica', color:'#107c10', bg:'#dff6dd'},
+  {estado:'Rechazado / Descartado',desc:'Comité lo rechaza o se paraliza', color:'#c62828', bg:'#fde7e9'},
+];
+
+function renderPanel() {
+  // Semanas
+  const semWrap = document.getElementById('panel-semanas');
+  if(semWrap) semWrap.innerHTML = SEMANAS.map(s=>`
+    <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;cursor:pointer;" onclick="toggleSemana(${s.n-1})">
+      <div style="flex-shrink:0;width:22px;height:22px;border-radius:50%;background:#1a3a6b;color:white;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px;">${s.n}</div>
+      <div style="flex:1;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <strong style="font-size:11px;color:#212121;">${s.fase}</strong>
+          <input type="checkbox" id="sem-chk-${s.n-1}" onchange="marcarSemana(${s.n-1})" style="width:14px;height:14px;cursor:pointer;">
+        </div>
+        <div style="font-size:10px;color:#666;line-height:1.4;">${s.entregable}</div>
+      </div>
+    </div>`).join('');
+
+  // Tareas
+  const tarWrap = document.getElementById('panel-tareas');
+  if(tarWrap) tarWrap.innerHTML = TAREAS.map((t,i)=>`
+    <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;">
+      <input type="checkbox" id="tar-chk-${i}" onchange="marcarTarea(${i})" style="width:14px;height:14px;cursor:pointer;margin-top:2px;flex-shrink:0;">
+      <div>
+        <span style="font-size:10px;font-weight:700;color:#1a3a6b;">T${t.n}</span>
+        <span style="font-size:11px;color:#333;margin-left:4px;" id="tar-lbl-${i}">${t.desc}</span>
+      </div>
+    </div>`).join('');
+
+  // Requerimientos
+  const reqWrap = document.getElementById('panel-reqs');
+  if(reqWrap) reqWrap.innerHTML = REQS_PANEL.map(r=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;padding:4px 6px;border-radius:4px;background:#f9f9f9;">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="font-size:10px;font-weight:700;color:#8b0000;min-width:20px;">R${r.n}</span>
+        <span style="font-size:11px;color:#333;">${r.desc}</span>
+      </div>
+      <span style="font-size:9px;background:#e3f2fd;color:#0d47a1;padding:1px 6px;border-radius:8px;white-space:nowrap;margin-left:6px;">${r.pantalla}</span>
+    </div>`).join('');
+
+  // Ciclo de vida
+  const cicloWrap = document.getElementById('panel-ciclo');
+  if(cicloWrap) cicloWrap.innerHTML = CICLO_PANEL.map((c,i)=>`
+    <div style="display:flex;align-items:center;gap:6px;">
+      ${i>0?'<div style="width:2px;height:8px;background:#ddd;margin-left:9px;margin-top:-4px;"></div>':''}
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:2px;">
+      <div style="width:20px;height:20px;border-radius:50%;background:${c.bg};border:2px solid ${c.color};flex-shrink:0;margin-top:1px;"></div>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:${c.color};">${c.estado}</div>
+        <div style="font-size:10px;color:#666;">${c.desc}</div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleSemana(i) {
+  const chk = document.getElementById('sem-chk-'+i);
+  if(chk) { chk.checked = !chk.checked; marcarSemana(i); }
+}
+function marcarSemana(i) {
+  SEMANAS[i].done = document.getElementById('sem-chk-'+i).checked;
+  const row = document.getElementById('sem-chk-'+i).closest('div[onclick]');
+  if(row) row.style.opacity = SEMANAS[i].done ? '0.5' : '1';
+}
+function marcarTarea(i) {
+  TAREAS[i].done = document.getElementById('tar-chk-'+i).checked;
+  const lbl = document.getElementById('tar-lbl-'+i);
+  if(lbl) lbl.style.textDecoration = TAREAS[i].done ? 'line-through' : 'none';
+}
+
+function togglePanel() {
+  const panel = document.getElementById('project-panel');
+  const overlay = document.getElementById('panel-overlay');
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  overlay.style.display = isOpen ? 'none' : 'block';
+  if(!isOpen) renderPanel();
 }
 
 // ================================================================
